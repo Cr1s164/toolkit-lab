@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://toolkit-site.vercel.app/sitemap.xml
+
+# ToolKit Lab - 免费在线工具集合
+# 所有工具页面均可被搜索引擎收录
+# 最后更新：2026-03-10

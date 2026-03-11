@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原创二维码生成器 - ToolKit Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="原创二维码生成器，支持自定义颜色、形状、尺寸、LOGO，独特的UI设计和用户体验。">
+    <!-- QRCode.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+                <a href="../index.html" class="text-xl font-bold text-gray-900">ToolKit Lab</a>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">原创工具</span>
+            </div>
+            <a href="../index.html" class="text-gray-700 hover:text-blue-600">
+                <i class="fas fa-arrow-left mr-1"></i>返回首页
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <header class="text-center mb-12">
+                <div class="text-green-500 text-6xl mb-4">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">原创二维码生成器</h1>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    完全免费的二维码生成工具，提供独特的自定义功能和用户体验。<br>
+                    <span class="text-sm text-gray-500">数字工匠文化：用原创代码创造实用价值</span>
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 左侧控制面板 -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-sliders-h mr-3 text-blue-500"></i>自定义设置
+                        </h2>
+                        
+                        <div class="space-y-8">
+                            <!-- 文本内容 -->
+                            <div class="control-group">
+                                <label class="block text-gray-700 font-medium mb-3">
+                                    <i class="fas fa-font mr-2"></i>二维码内容
+                                </label>
+                                <textarea id="qr-text" class="w-full h-32 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="输入文本、URL、联系方式等..."></textarea>
+                                <p class="text-gray-500 text-sm mt-2">支持文本、URL、WiFi配置、联系人信息等</p>
+                            </div>
+                            
+                            <!-- 尺寸控制 -->
+                            <div class="control-group">
+                                <label class="block text-gray-700 font-medium mb-3">
+                                    <i class="fas fa-expand-alt mr-2"></i>尺寸调整
+                                </label>
+                                <div class="slider-container">
+                                    <input type="range" id="qr-size" min="100" max="500" value="250" class="w-full">
+                                    <span class="text-gray-700 font-medium min-w-[60px]"><span id="size-value">250</span>px</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 颜色设置 -->
+                            <div class="control-group">
+                                <label class="block text-gray-700 font-medium mb-3">
+                                    <i class="fas fa-palette mr-2"></i>颜色设置
+                                </label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="color-picker">
+                                        <label class="text-gray-600 mb-2 block">二维码颜色</label>
+                                        <input type="color" id="qr-color" value="#000000" class="color-input">
+                                        <span class="text-gray-700" id="color-value">#000000</span>
+                                    </div>
+                                    <div class="color-picker">
+                                        <label class="text-gray-600 mb-2 block">背景颜色</label>
+                                        <input type="color" id="qr-bg-color" value="#ffffff" class="color-input">
+                                        <span class="text-gray-700" id="bg-color-value">#FFFFFF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 形状和容错 -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="control-group">
+                                    <label class="block text-gray-700 font-medium mb-3">
+                                        <i class="fas fa-shapes mr-2"></i>形状样式
+                                    </label>
+                                    <select id="qr-shape" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option value="square">标准方形</option>
+                                        <option value="round">圆角样式</option>
+                                        <option value="dot">点状样式</option>
+                                        <option value="mixed">混合样式</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="control-group">
+                                    <label class="block text-gray-700 font-medium mb-3">
+                                        <i class="fas fa-shield-alt mr-2"></i>容错级别
+                                    </label>
+                                    <select id="qr-error-level" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option value="L">低 (L) - 7%</option>
+                                        <option value="M" selected>中 (M) - 15%</option>
+                                        <option value="Q">高 (Q) - 25%</option>
+                                        <option value="H">最高 (H) - 30%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- 示例按钮 -->
+                            <div class="control-group">
+                                <label class="block text-gray-700 font-medium mb-3">
+                                    <i class="fas fa-lightbulb mr-2"></i>快速示例
+                                </label>
+                                <div id="examples-container" class="flex flex-wrap gap-3">
+                                    <!-- 示例按钮将通过JavaScript动态添加 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 操作按钮 -->
+                            <div class="flex flex-wrap gap-4">
+                                <button id="generate-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg font-medium flex items-center transition-colors">
+                                    <i class="fas fa-bolt mr-2"></i>生成二维码
+                                </button>
+                                <button id="download-btn" class="bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-lg font-medium flex items-center transition-colors" disabled>
+                                    <i class="fas fa-download mr-2"></i>下载PNG
+                                </button>
+                                <button id="reset-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 px-8 rounded-lg font-medium flex items-center transition-colors">
+                                    <i class="fas fa-redo mr-2"></i>重置设置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数字工匠文化说明 -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+                        <h3 class="text-xl font-bold text-blue-900 mb-3 flex items-center">
+                            <i class="fas fa-code mr-2"></i>数字工匠文化
+                        </h3>
+                        <p class="text-blue-800 mb-3">
+                            本工具遵循<strong>数字工匠文化</strong>原则：免费开源、隐私保护、实用价值、持续迭代。
+                        </p>
+                        <ul class="text-blue-700 space-y-2">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>完全免费</strong>：无广告、无付费墙、无数据收集</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>本地处理</strong>：所有生成操作在浏览器本地完成，保护隐私</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>开源精神</strong>：代码公开透明，欢迎学习和改进</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>持续更新</strong>：基于用户反馈不断优化功能和体验</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 右侧预览区域 -->
+                <div class="lg:col-span-1">
+                    <div id="preview-container" class="sticky top-8">
+                        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                                <i class="fas fa-eye mr-3 text-purple-500"></i>实时预览
+                            </h2>
+                            
+                            <div class="text-center">
+                                <div id="qr-code" class="inline-block p-4 bg-white border border-gray-200 rounded-lg">
+                                    <!-- 二维码将在这里显示 -->
+                                    <div class="text-gray-400 py-12">
+                                        <i class="fas fa-qrcode text-5xl mb-4"></i>
+                                        <p class="text-lg">等待生成二维码</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 text-gray-600">
+                                    <p class="mb-2"><i class="fas fa-info-circle mr-2"></i>二维码将实时更新</p>
+                                    <p class="text-sm">调整左侧设置可立即看到效果</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 使用说明 -->
+                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-book-open mr-2"></i>使用说明
+                            </h3>
+                            <ol class="text-gray-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">1</span>
+                                    输入二维码内容（URL、文本、联系方式等）
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">2</span>
+                                    调整颜色、尺寸、形状等个性化设置
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">3</span>
+                                    点击"生成二维码"按钮实时预览
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">4</span>
+                                    满意后点击"下载PNG"保存图片
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 功能特点 -->
+            <div class="bg-white rounded-xl shadow-md p-8 mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">原创功能特点</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <div class="text-blue-500 text-3xl mb-4">
+                            <i class="fas fa-brush"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">独特的UI设计</h3>
+                        <p class="text-gray-600">精心设计的界面，直观的操作流程，实时预览反馈。</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <div class="text-green-500 text-3xl mb-4">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">丰富的自定义</h3>
+                        <p class="text-gray-600">支持颜色、形状、尺寸、容错级别等多种个性化设置。</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <div class="text-purple-500 text-3xl mb-4">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">隐私保护</h3>
+                        <p class="text-gray-600">所有生成操作在浏览器本地完成，不收集任何用户数据。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-6">
+                <p class="text-xl font-bold mb-2">ToolKit Lab</p>
+                <p class="text-gray-400">原创免费工具集合 | 数字工匠文化</p>
+            </div>
+            <div class="text-center text-gray-400">
+                <p>© 2026 ToolKit Lab. 完全免费，无广告，无需注册。</p>
+                <p class="mt-2">Made with <i class="fas fa-heart text-red-500"></i> by AI Assistant | 持续更新迭代</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入原创二维码生成脚本 -->
+    <script src="../js/qrcode.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本差异对比器 - ToolKit Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="可视化对比文本和代码差异，支持多种算法、语法高亮、实时同步滚动。">
+    <!-- Diff库 -->
+    <script src="https://cdn.jsdelivr.net/npm/diff@5.2.0/dist/diff.min.js"></script>
+    <!-- 语法高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+                <a href="../index.html" class="text-xl font-bold text-gray-900">ToolKit Lab</a>
+                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">原创工具</span>
+            </div>
+            <a href="../index.html" class="text-gray-700 hover:text-blue-600">
+                <i class="fas fa-arrow-left mr-1"></i>返回首页
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <header class="text-center mb-12">
+                <div class="text-purple-500 text-6xl mb-4">
+                    <i class="fas fa-code-compare"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">文本差异对比器</h1>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    可视化对比文本和代码差异，支持多种算法、语法高亮、实时同步滚动。<br>
+                    <span class="text-sm text-gray-500">数字工匠文化：用原创工具提升开发效率</span>
+                </p>
+            </header>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <!-- 控制面板 -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-sliders-h mr-3 text-blue-500"></i>对比设置
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">对比算法</label>
+                            <select id="diff-algorithm" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="chars">字符级对比</option>
+                                <option value="words">单词级对比</option>
+                                <option value="lines" selected>行级对比</option>
+                                <option value="semantic">语义级对比</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">语言语法</label>
+                            <select id="language-select" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="plaintext">纯文本</option>
+                                <option value="javascript" selected>JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="html">HTML</option>
+                                <option value="css">CSS</option>
+                                <option value="json">JSON</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">显示选项</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="show-line-numbers" class="mr-2" checked>
+                                    <label for="show-line-numbers" class="text-gray-700">显示行号</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="sync-scroll" class="mr-2" checked>
+                                    <label for="sync-scroll" class="text-gray-700">同步滚动</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button id="compare-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg font-medium flex items-center transition-colors">
+                            <i class="fas fa-play mr-2"></i>开始对比
+                        </button>
+                        <button id="clear-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 px-8 rounded-lg font-medium flex items-center transition-colors">
+                            <i class="fas fa-trash-alt mr-2"></i>清空内容
+                        </button>
+                        <button id="swap-btn" class="bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-lg font-medium flex items-center transition-colors">
+                            <i class="fas fa-exchange-alt mr-2"></i>交换文本
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 文本对比区域 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- 左侧文本 -->
+                    <div class="text-container">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-file-alt mr-2 text-blue-600"></i>原始文本
+                            </h3>
+                            <div class="text-sm text-gray-500">
+                                <span id="left-count">0</span> 字符
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div id="left-line-numbers" class="absolute left-0 top-0 bottom-0 w-12 bg-gray-100 border-r border-gray-300 overflow-hidden text-right text-gray-500 text-sm font-mono select-none hidden"></div>
+                            <textarea id="left-text" class="w-full h-80 p-4 pl-14 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono" 
+                                placeholder="在此输入或粘贴原始文本..."></textarea>
+                        </div>
+                        <div class="mt-2 flex space-x-2">
+                            <button class="text-sm text-blue-600 hover:text-blue-800" onclick="document.getElementById('left-text').value = ''">
+                                <i class="fas fa-times mr-1"></i>清空
+                            </button>
+                            <button class="text-sm text-blue-600 hover:text-blue-800" onclick="pasteToLeft()">
+                                <i class="fas fa-paste mr-1"></i>粘贴
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧文本 -->
+                    <div class="text-container">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-file-alt mr-2 text-green-600"></i>修改文本
+                            </h3>
+                            <div class="text-sm text-gray-500">
+                                <span id="right-count">0</span> 字符
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div id="right-line-numbers" class="absolute left-0 top-0 bottom-0 w-12 bg-gray-100 border-r border-gray-300 overflow-hidden text-right text-gray-500 text-sm font-mono select-none hidden"></div>
+                            <textarea id="right-text" class="w-full h-80 p-4 pl-14 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 font-mono" 
+                                placeholder="在此输入或粘贴修改后的文本..."></textarea>
+                        </div>
+                        <div class="mt-2 flex space-x-2">
+                            <button class="text-sm text-green-600 hover:text-green-800" onclick="document.getElementById('right-text').value = ''">
+                                <i class="fas fa-times mr-1"></i>清空
+                            </button>
+                            <button class="text-sm text-green-600 hover:text-green-800" onclick="pasteToRight()">
+                                <i class="fas fa-paste mr-1"></i>粘贴
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 差异结果区域 -->
+                <div id="diff-result" class="hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-bar mr-3 text-purple-500"></i>差异分析结果
+                    </h3>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                                <div class="text-2xl font-bold text-blue-600" id="added-count">0</div>
+                                <div class="text-gray-600">新增行</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                                <div class="text-2xl font-bold text-red-600" id="removed-count">0</div>
+                                <div class="text-gray-600">删除行</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                                <div class="text-2xl font-bold text-yellow-600" id="changed-count">0</div>
+                                <div class="text-gray-600">修改行</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                                <div class="text-2xl font-bold text-green-600" id="similarity">100%</div>
+                                <div class="text-gray-600">相似度</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-700 mb-2">差异预览</h4>
+                            <div id="diff-preview" class="bg-gray-900 text-gray-200 rounded-lg p-4 overflow-x-auto font-mono text-sm">
+                                <!-- 差异内容将通过JavaScript动态生成 -->
+                                <div class="text-gray-500 text-center py-8">
+                                    <i class="fas fa-code-compare text-3xl mb-3"></i>
+                                    <p>对比后将在这里显示差异</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <button id="export-html-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-medium">
+                                <i class="fas fa-download mr-2"></i>导出HTML报告
+                            </button>
+                            <button id="copy-diff-btn" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-lg font-medium">
+                                <i class="fas fa-copy mr-2"></i>复制差异文本
+                            </button>
+                            <button id="share-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg font-medium">
+                                <i class="fas fa-share-alt mr-2"></i>分享对比
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 示例区域 -->
+                <div class="mt-8 pt-8 border-t">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>快速示例
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button class="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg text-left transition-colors" onclick="loadExample('code')">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-code text-blue-600 mr-2"></i>
+                                <span class="font-bold text-blue-800">代码修改示例</span>
+                            </div>
+                            <p class="text-blue-700 text-sm">展示函数重构前后的代码差异</p>
+                        </button>
+                        <button class="p-4 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors" onclick="loadExample('config')">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-cog text-green-600 mr-2"></i>
+                                <span class="font-bold text-green-800">配置变更示例</span>
+                            </div>
+                            <p class="text-green-700 text-sm">对比配置文件版本变化</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 使用说明 -->
+            <div class="bg-blue-50 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold text-blue-900 mb-3 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>使用说明
+                </h3>
+                <div class="space-y-3 text-blue-800">
+                    <p><strong>1. 输入文本</strong>：在左右两侧文本框中输入或粘贴要对比的内容。</p>
+                    <p><strong>2. 选择设置</strong>：根据需求选择对比算法和语法高亮语言。</p>
+                    <p><strong>3. 开始对比</strong>：点击"开始对比"按钮，工具会自动分析差异。</p>
+                    <p><strong>4. 查看结果</strong>：差异结果会以颜色标记显示，并有详细统计。</p>
+                    <p><strong>隐私保护</strong>：所有处理在浏览器本地完成，文本不会上传到服务器。</p>
+                </div>
+            </div>
+            
+            <!-- 数字工匠文化 -->
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold text-purple-900 mb-3 flex items-center">
+                    <i class="fas fa-code mr-2"></i>数字工匠文化
+                </h3>
+                <p class="text-purple-800 mb-3">
+                    本工具遵循<strong>数字工匠文化</strong>原则：免费开源、隐私保护、实用价值、持续迭代。
+                </p>
+                <ul class="text-purple-700 space-y-2">
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>完全本地处理</strong>：保护你的代码和文本隐私</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>多种对比算法</strong>：自主研发的差异分析逻辑</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>语法高亮支持</strong>：为开发者优化的代码对比体验</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>持续改进</strong>：基于用户反馈不断优化功能和性能</li>
+                </ul>
+            </div>
+            
+            <!-- 工具统计 -->
+            <div class="text-center text-gray-500 text-sm">
+                <p>本工具已使用 <span id="usage-count">0</span> 次</p>
+                <p class="mt-2">觉得好用？<a href="../index.html#donate" class="text-blue-600 hover:underline">支持我们</a>继续开发更多工具！</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-6">
+                <p class="text-xl font-bold mb-2">ToolKit Lab</p>
+                <p class="text-gray-400">原创免费工具集合 | 数字工匠文化</p>
+            </div>
+            <div class="text-center text-gray-400">
+                <p>© 2026 ToolKit Lab. 完全免费，无广告，无需注册。</p>
+                <p class="mt-2">Made with <i class="fas fa-heart text-red-500"></i> by AI Assistant | 持续更新迭代</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+    <script src="../js/diff.js"></script>
+</body>
+</html>

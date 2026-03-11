@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolKit Lab - 在线工具集合</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="description" content="免费在线工具集合：Base64编解码、时间戳转换、二维码生成、图片处理等实用工具，助力开发者和创作者提高效率。">
+    <meta name="keywords" content="在线工具,Base64,时间戳,二维码,图片处理,开发工具,免费工具">
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+                <a href="/" class="text-xl font-bold text-gray-900">ToolKit Lab</a>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Beta</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#tools" class="text-gray-700 hover:text-blue-600 font-medium">工具</a>
+                <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium">关于</a>
+                <a href="#donate" class="text-gray-700 hover:text-blue-600 font-medium">支持</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white px-4 py-3 border-t">
+            <a href="#tools" class="block py-2 text-gray-700 hover:text-blue-600">工具</a>
+            <a href="#about" class="block py-2 text-gray-700 hover:text-blue-600">关于</a>
+            <a href="#donate" class="block py-2 text-gray-700 hover:text-blue-600">支持</a>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="container mx-auto px-4 py-12 md:py-20">
+        <div class="text-center max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+                免费在线工具集合
+                <span class="text-blue-600">助力你的创作与开发</span>
+            </h1>
+            <p class="text-lg text-gray-600 mb-8">
+                无需注册、完全免费的工具集合。Base64编解码、时间戳转换、二维码生成、图片处理等实用工具，一键使用。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#tools" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition">
+                    <i class="fas fa-play mr-2"></i>立即使用工具
+                </a>
+                <a href="#donate" class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg shadow transition">
+                    <i class="fas fa-heart mr-2"></i>支持项目
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 工具展示区域 -->
+    <section id="tools" class="container mx-auto px-4 py-12">
+        <h2 class="text-3xl font-bold text-center mb-10">实用工具集合</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 工具卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-blue-600 text-2xl mb-4">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Base64 编解码</h3>
+                <p class="text-gray-600 mb-4">快速对文本进行Base64编码和解码，支持文件上传。</p>
+                <a href="tools/base64.html" class="text-blue-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-purple-600 text-2xl mb-4">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">时间戳转换</h3>
+                <p class="text-gray-600 mb-4">Unix时间戳与人类可读时间的互相转换，支持时区调整。</p>
+                <a href="tools/timestamp.html" class="text-purple-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-green-600 text-2xl mb-4">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">二维码生成器</h3>
+                <p class="text-gray-600 mb-4">生成自定义二维码，支持颜色、尺寸、LOGO等设置。</p>
+                <a href="tools/qrcode.html" class="text-green-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-purple-600 text-2xl mb-4">
+                    <i class="fas fa-code-compare"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">文本差异对比器</h3>
+                <p class="text-gray-600 mb-4">可视化对比文本和代码差异，支持多种算法和语法高亮。</p>
+                <a href="tools/diff.html" class="text-purple-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-yellow-600 text-2xl mb-4">
+                    <i class="fas fa-file-code"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">JSON 格式化</h3>
+                <p class="text-gray-600 mb-4">美化、验证JSON数据，支持压缩和格式化。</p>
+                <a href="tools/json-formatter.html" class="text-yellow-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="text-indigo-600 text-2xl mb-4">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">颜色选择器</h3>
+                <p class="text-gray-600 mb-4">获取颜色值、调色板、渐变生成，支持多种格式。</p>
+                <a href="tools/color-picker.html" class="text-indigo-600 font-medium inline-flex items-center">
+                    使用工具 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-10">
+            <p class="text-gray-600">更多工具正在开发中...</p>
+        </div>
+    </section>
+
+    <!-- 关于区域 -->
+    <section id="about" class="bg-white py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">关于 ToolKit Lab</h2>
+            <div class="max-w-3xl mx-auto text-gray-700 space-y-4">
+                <p>ToolKit Lab 是一个完全免费、无需注册的在线工具集合，旨在为开发者、设计师和创作者提供便捷的日常工具。</p>
+                <p>我们相信工具应该简单、高效且免费。所有工具都直接在浏览器中运行，不收集用户数据，不发送到服务器。</p>
+                <p>项目由AI助手创建和维护，通过用户的支持持续改进和增加新功能。</p>
+                <div class="bg-blue-50 p-4 rounded-lg mt-6">
+                    <h3 class="font-bold text-blue-800 mb-2">📢 近期计划</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-blue-700">
+                        <li>增加Markdown编辑器</li>
+                        <li>开发正则表达式测试工具</li>
+                        <li>添加更多图片处理功能</li>
+                        <li>优化移动端体验</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 支持区域 -->
+    <section id="donate" class="container mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6">支持项目持续发展</h2>
+            <p class="text-gray-700 text-center mb-6">
+                ToolKit Lab 完全免费，无广告，靠用户的支持维持运营和开发新功能。
+                如果你觉得这些工具对你有帮助，欢迎扫描下方二维码支持我们。
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="text-center">
+                    <div class="bg-white p-4 rounded-xl shadow-md inline-block">
+                        <!-- 收款码图片区域 -->
+                        <img id="wechat-qr" src="images/wechat-qr.jpg" alt="微信收款码" class="w-64 h-64 object-contain mx-auto">
+                        <p class="text-sm text-gray-600 mt-2">微信扫码支持</p>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">单笔最高2000元，感谢您的支持！</p>
+                </div>
+                <div class="space-y-4 max-w-md">
+                    <div class="bg-white p-4 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg mb-2">💡 支持者的权益</h3>
+                        <ul class="space-y-1 text-gray-700">
+                            <li><i class="fas fa-check text-green-500 mr-2"></i>优先体验新工具</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i>提出功能建议</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i>在感谢页面展示（可选）</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i>获取项目更新动态</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg mb-2">📈 资金用途</h3>
+                        <ul class="space-y-1 text-gray-700">
+                            <li><i class="fas fa-server text-blue-500 mr-2"></i>服务器与域名费用</li>
+                            <li><i class="fas fa-tools text-yellow-500 mr-2"></i>开发新工具功能</li>
+                            <li><i class="fas fa-bolt text-green-500 mr-2"></i>优化网站性能</li>
+                            <li><i class="fas fa-heart text-red-500 mr-2"></i>维持无广告体验</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <p class="text-gray-600">感谢每一位支持者！你们的鼓励是我们持续更新的动力。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fas fa-tools text-blue-400 text-xl"></i>
+                        <span class="text-xl font-bold">ToolKit Lab</span>
+                    </div>
+                    <p class="text-gray-400">免费在线工具集合</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#tools" class="text-gray-400 hover:text-white">工具</a>
+                    <a href="#about" class="text-gray-400 hover:text-white">关于</a>
+                    <a href="#donate" class="text-gray-400 hover:text-white">支持</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
+                <p>© 2026 ToolKit Lab. 本网站所有工具均免费提供，不收集用户数据。</p>
+                <p class="mt-2">Made with <i class="fas fa-heart text-red-500"></i> by AI Assistant</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

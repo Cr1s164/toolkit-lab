@@ -1,0 +1,18 @@
+{
+  "pages": {
+    "type": "project",
+    "https": true,
+    "dest": "./",
+    "force_https": true
+  },
+  "build": {
+    "command": "echo 'No build needed for static site'",
+    "output": "./"
+  },
+  "deploy": {
+    "provider": "pages",
+    "repo": "toolkit-lab",
+    "branch": "main",
+    "auto": true
+  }
+}

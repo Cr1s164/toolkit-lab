@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+    <rect width="256" height="256" fill="#fff"/>
+    <rect x="16" y="16" width="224" height="224" fill="#07C160" stroke="#000" stroke-width="2"/>
+    <rect x="56" y="56" width="144" height="144" fill="#fff"/>
+    <circle cx="128" cy="128" r="48" fill="#07C160" opacity="0.7"/>
+    <text x="128" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#000">微信收款码</text>
+    <text x="128" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">请替换为真实二维码</text>
+    <path d="M80,80 L176,176 M176,80 L80,176" stroke="#07C160" stroke-width="4" stroke-linecap="round"/>
+</svg>

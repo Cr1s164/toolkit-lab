@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间戳转换工具 - ToolKit Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="免费的时间戳转换工具，支持Unix时间戳与日期时间互相转换，时区调整。">
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+                <a href="../index.html" class="text-xl font-bold text-gray-900">ToolKit Lab</a>
+                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">工具</span>
+            </div>
+            <a href="../index.html" class="text-gray-700 hover:text-blue-600">
+                <i class="fas fa-arrow-left mr-1"></i>返回首页
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- 标题 -->
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-2">时间戳转换工具</h1>
+                <p class="text-gray-600">Unix时间戳与人类可读时间的互相转换，支持时区调整</p>
+            </div>
+
+            <!-- 工具主体 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 时间戳转日期 -->
+                    <div>
+                        <h2 class="text-xl font-bold mb-4 text-purple-700">
+                            <i class="fas fa-clock mr-2"></i>时间戳 → 日期时间
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">输入时间戳</label>
+                                <input type="number" id="timestamp-input" 
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                    placeholder="例如：1773144000" value="">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">时区选择</label>
+                                <select id="timezone-select" class="w-full p-3 border border-gray-300 rounded-lg">
+                                    <option value="local">本地时区</option>
+                                    <option value="UTC">UTC</option>
+                                    <option value="Asia/Shanghai">Asia/Shanghai (GMT+8)</option>
+                                    <option value="America/New_York">America/New_York (GMT-5)</option>
+                                    <option value="Europe/London">Europe/London (GMT+0)</option>
+                                </select>
+                            </div>
+                            <button id="convert-to-date" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-medium">
+                                <i class="fas fa-exchange-alt mr-2"></i>转换为日期
+                            </button>
+                            <div>
+                                <label class="block text-gray-700 mb-2">转换结果</label>
+                                <div id="date-result" class="p-4 border border-gray-300 rounded-lg bg-gray-50 min-h-20">
+                                    <p class="text-gray-500">转换结果将显示在这里...</p>
+                                </div>
+                            </div>
+                            <button id="copy-date" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-lg font-medium">
+                                <i class="fas fa-copy mr-2"></i>复制结果
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 日期转时间戳 -->
+                    <div>
+                        <h2 class="text-xl font-bold mb-4 text-green-700">
+                            <i class="fas fa-calendar mr-2"></i>日期时间 → 时间戳
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">选择日期和时间</label>
+                                <input type="datetime-local" id="datetime-input" 
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">时间精度</label>
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="precision" value="seconds" checked class="mr-2">
+                                        秒级
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="precision" value="milliseconds" class="mr-2">
+                                        毫秒级
+                                    </label>
+                                </div>
+                            </div>
+                            <button id="convert-to-timestamp" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium">
+                                <i class="fas fa-exchange-alt mr-2"></i>转换为时间戳
+                            </button>
+                            <div>
+                                <label class="block text-gray-700 mb-2">转换结果</label>
+                                <div id="timestamp-result" class="p-4 border border-gray-300 rounded-lg bg-gray-50 min-h-20">
+                                    <p class="text-gray-500">转换结果将显示在这里...</p>
+                                </div>
+                            </div>
+                            <button id="copy-timestamp" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-lg font-medium">
+                                <i class="fas fa-copy mr-2"></i>复制结果
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 当前时间 -->
+                <div class="mt-8 pt-8 border-t">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">
+                        <i class="fas fa-sync-alt mr-2"></i>当前时间
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <p class="text-sm text-blue-600 mb-1">当前时间戳（秒）</p>
+                            <p id="current-timestamp" class="text-2xl font-bold text-blue-800">-</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-center">
+                            <p class="text-sm text-green-600 mb-1">当前时间戳（毫秒）</p>
+                            <p id="current-timestamp-ms" class="text-2xl font-bold text-green-800">-</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg text-center">
+                            <p class="text-sm text-purple-600 mb-1">当前本地时间</p>
+                            <p id="current-datetime" class="text-xl font-bold text-purple-800">-</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button id="refresh-time" class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg">
+                            <i class="fas fa-redo mr-2"></i>刷新时间
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用说明 -->
+            <div class="bg-blue-50 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-blue-800">
+                    <i class="fas fa-info-circle mr-2"></i>使用说明
+                </h3>
+                <div class="space-y-3 text-blue-700">
+                    <p><strong>Unix时间戳</strong>：从1970年1月1日00:00:00 UTC开始计算的秒数。</p>
+                    <p><strong>时间戳转日期</strong>：输入时间戳（秒或毫秒），选择时区，获取对应的日期时间。</p>
+                    <p><strong>日期转时间戳</strong>：选择日期和时间，转换为时间戳（支持秒级和毫秒级）。</p>
+                    <p><strong>常见用途</strong>：</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>日志时间处理</li>
+                        <li>API请求时间戳</li>
+                        <li>缓存过期时间</li>
+                        <li>数据记录时间标记</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 工具统计 -->
+            <div class="text-center text-gray-500 text-sm">
+                <p>本工具已使用 <span id="usage-count">0</span> 次</p>
+                <p class="mt-2">觉得好用？<a href="../index.html#donate" class="text-blue-600 hover:underline">支持我们</a>继续开发更多工具！</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2026 ToolKit Lab. 免费在线工具集合</p>
+            <p class="mt-2 text-gray-400">Made with <i class="fas fa-heart text-red-500"></i> by AI Assistant</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+    <script src="../js/timestamp.js"></script>
+</body>
+</html>
