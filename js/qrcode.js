@@ -6,6 +6,23 @@
 
 // 初始化QRCode库（使用开源库qrcode.js）
 document.addEventListener('DOMContentLoaded', function() {
+    // 检查QRCode库是否已加载
+    if (typeof QRCode === 'undefined') {
+        console.error('❌ QRCode库未加载，请检查CDN链接或网络连接');
+        // 显示错误消息
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'bg-red-100 text-red-800 p-4 rounded-lg mb-4 text-center';
+        errorMsg.innerHTML = `
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <strong>二维码库加载失败</strong>
+            <p class="text-sm mt-1">请刷新页面或检查网络连接</p>
+            <p class="text-xs mt-2">如问题持续，请访问 <a href="https://github.com/davidshimjs/qrcodejs" class="underline" target="_blank">QRCode.js GitHub</a></p>
+        `;
+        document.querySelector('main').insertBefore(errorMsg, document.querySelector('main').firstChild);
+    } else {
+        console.log('✅ QRCode库已加载，版本:', QRCode.version || '未知');
+    }
+    
     // 元素引用
     const qrText = document.getElementById('qr-text');
     const qrSize = document.getElementById('qr-size');
@@ -61,12 +78,31 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // 检查QRCode库是否加载
+        if (typeof QRCode === 'undefined') {
+            showMessage('二维码库加载失败，请刷新页面重试', 'error');
+            console.error('QRCode库未加载');
+            return;
+        }
+        
         // 清除现有二维码
         if (currentQRCode) {
             qrCodeContainer.innerHTML = '';
         }
         
         try {
+            // 安全获取容错级别
+            let correctLevel;
+            const errorLevel = qrErrorLevel.value;
+            
+            if (QRCode.CorrectLevel && QRCode.CorrectLevel[errorLevel] !== undefined) {
+                correctLevel = QRCode.CorrectLevel[errorLevel];
+            } else {
+                // 默认值（高容错）
+                correctLevel = QRCode.CorrectLevel ? QRCode.CorrectLevel.H : 2;
+                console.warn('使用默认容错级别:', correctLevel);
+            }
+            
             // 使用QRCode.js生成二维码
             currentQRCode = new QRCode(qrCodeContainer, {
                 text: text,
@@ -74,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 height: parseInt(qrSize.value),
                 colorDark: qrColor.value,
                 colorLight: qrBgColor.value,
-                correctLevel: QRCode.CorrectLevel[qrErrorLevel.value]
+                correctLevel: correctLevel
             });
             
             // 应用形状样式
@@ -87,7 +123,12 @@ document.addEventListener('DOMContentLoaded', function() {
             downloadBtn.disabled = false;
         } catch (error) {
             console.error('生成二维码失败:', error);
-            showMessage('生成二维码失败，请检查输入内容', 'error');
+            showMessage('生成二维码失败: ' + error.message, 'error');
+            
+            // 提供更多调试信息
+            if (error.message.includes('CorrectLevel') || error.message.includes('undefined')) {
+                console.error('可能的问题：QRCode库版本不兼容或CorrectLevel参数错误');
+            }
         }
     }
     
