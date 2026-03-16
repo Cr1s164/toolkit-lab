@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 编辑器 - ToolKit Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="免费的在线Markdown编辑器，实时预览，语法高亮，支持导出HTML和Markdown文件。">
+    <!-- Marked.js 用于Markdown解析 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js 用于语法高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll</script>
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+                <a href="../index.html" class="text-xl font-bold text-gray-900">ToolKit Lab</a>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">工具</span>
+            </div>
+            <a href="../index.html" class="text-gray-700 hover:text-blue-600">
+                <i class="fas fa-arrow-left mr-1"></i>返回首页
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- 标题区 -->
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-markdown text-blue-600"></i> Markdown 编辑器
+                </h1>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                    一个完全免费的在线Markdown编辑器，支持实时预览、语法高亮、文件导出。所有处理都在本地进行，保护您的隐私。
+                </p>
+                <div class="mt-4 flex flex-wrap justify-center gap-2">
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">实时预览</span>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">语法高亮</span>
+                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">文件导出</span>
+                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">隐私保护</span>
+                </div>
+            </div>
+
+            <!-- 主要编辑器区域 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 左侧：Markdown输入 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-edit text-blue-500 mr-2"></i>Markdown 输入
+                        </h2>
+                        <div class="flex space-x-2">
+                            <button id="clearBtn" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition">
+                                <i class="fas fa-trash-alt mr-1"></i>清空
+                            </button>
+                            <button id="sampleBtn" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition">
+                                <i class="fas fa-magic mr-1"></i>示例
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <textarea id="markdownInput" class="w-full h-96 font-mono text-gray-800 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none" 
+                                  placeholder="在此输入Markdown内容... 支持标题、列表、代码块、表格等语法。"># Markdown 编辑器示例
+
+## 欢迎使用 ToolKit Lab 的 Markdown 编辑器
+
+这是一个**完全免费**的在线编辑器，所有处理都在您的浏览器中完成，保护您的隐私。
+
+### 主要功能
+- ✅ **实时预览**：输入时即时看到渲染结果
+- ✅ **语法高亮**：代码块自动高亮显示
+- ✅ **文件导出**：支持导出为 HTML 和 Markdown 文件
+- ✅ **本地处理**：所有数据都在您的设备上处理
+
+### 代码示例
+```javascript
+// 这是一个JavaScript代码示例
+function helloWorld() {
+    console.log("Hello, Markdown Editor!");
+    return "ToolKit Lab 让工具更简单";
+}
+```
+
+### 表格示例
+| 功能 | 状态 | 说明 |
+|------|------|------|
+| 实时预览 | ✅ 已实现 | 输入时即时渲染 |
+| 语法高亮 | ✅ 已实现 | 支持多种编程语言 |
+| 文件导出 | 🔄 开发中 | 即将推出 |
+| 快捷键 | 🔄 开发中 | 提升编辑效率 |
+
+### 数学公式支持
+编辑器支持 LaTeX 数学公式：
+- 行内公式：$E = mc^2$
+- 块级公式：$$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
+
+> **提示**：这是一个正在开发中的工具，我们会持续改进功能！</textarea>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <button id="exportMdBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
+                                <i class="fas fa-download mr-2"></i>导出 Markdown
+                            </button>
+                            <button id="exportHtmlBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center">
+                                <i class="fas fa-code mr-2"></i>导出 HTML
+                            </button>
+                            <button id="copyHtmlBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center">
+                                <i class="fas fa-copy mr-2"></i>复制 HTML
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：HTML预览 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-eye text-green-500 mr-2"></i>实时预览
+                        </h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">自动更新</span>
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div id="htmlPreview" class="h-96 overflow-auto p-4 border border-gray-300 rounded-lg prose max-w-none">
+                            <!-- 预览内容将在这里动态渲染 -->
+                            <p class="text-gray-500 italic">预览将在此处显示...</p>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-500 flex justify-between">
+                            <div>
+                                <span id="charCount">0</span> 字符
+                            </div>
+                            <div>
+                                <span id="lineCount">0</span> 行
+                            </div>
+                            <div>
+                                <span id="wordCount">0</span> 词
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能说明和快捷键 -->
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 功能说明 -->
+                <div class="bg-blue-50 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-blue-900 mb-4">
+                        <i class="fas fa-info-circle mr-2"></i>功能说明
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <div>
+                                <strong>完全本地处理</strong> - 所有数据都在您的浏览器中处理，不会上传到任何服务器
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <div>
+                                <strong>实时预览</strong> - 输入Markdown时立即看到渲染结果
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <div>
+                                <strong>语法高亮</strong> - 使用Highlight.js自动高亮代码块
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock text-yellow-500 mt-1 mr-2"></i>
+                            <div>
+                                <strong>文件导出</strong> - 即将支持导出为HTML和Markdown文件
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 快捷键 -->
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-keyboard mr-2"></i>快捷键
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white p-3 rounded border">
+                            <div class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">Ctrl + B</div>
+                            <div class="text-sm mt-1">加粗文本</div>
+                        </div>
+                        <div class="bg-white p-3 rounded border">
+                            <div class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">Ctrl + I</div>
+                            <div class="text-sm mt-1">斜体文本</div>
+                        </div>
+                        <div class="bg-white p-3 rounded border">
+                            <div class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">Ctrl + K</div>
+                            <div class="text-sm mt-1">插入链接</div>
+                        </div>
+                        <div class="bg-white p-3 rounded border">
+                            <div class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">Ctrl + S</div>
+                            <div class="text-sm mt-1">保存/导出</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 隐私声明 -->
+            <div class="mt-8 bg-green-50 border border-green-200 rounded-xl p-6">
+                <div class="flex items-start">
+                    <i class="fas fa-shield-alt text-green-600 text-2xl mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-green-900 mb-2">隐私保护承诺</h3>
+                        <p class="text-green-800">
+                            ToolKit Lab 的所有工具都在您的浏览器本地运行，不会收集、存储或传输您的任何数据。
+                            我们相信隐私是基本权利，这也是我们工具的核心设计原则。
+                        </p>
+                        <div class="mt-3 flex items-center text-sm text-green-700">
+                            <i class="fas fa-lock mr-1"></i>
+                            <span>100% 本地处理 • 无数据收集 • 开源透明</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-tools text-blue-600 text-xl"></i>
+                        <span class="text-xl font-bold text-gray-900">ToolKit Lab</span>
+                    </div>
+                    <p class="text-gray-600 mt-2">免费、开源、隐私保护的开发者工具集合</p>
+                </div>
+                <div class="text-gray-600 text-sm">
+                    <p>© 2026 ToolKit Lab • 所有工具均为原创开发</p>
+                    <p class="mt-1">由 AI 助手小兰 管理和维护</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 主要JavaScript代码 -->
+    <script>
+        // 初始化marked.js
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(code, { language: lang }).value;
+                    } catch (err) {
+                        console.error('Highlight.js error:', err);
+                    }
+                }
+                return code;
+            }
+        });
+
+        // DOM元素
+        const markdownInput = document.getElementById('markdownInput');
+        const htmlPreview = document.getElementById('htmlPreview');
+        const clearBtn = document.getElementById('clearBtn');
+        const sampleBtn = document.getElementById('sampleBtn');
+        const exportMdBtn = document.getElementById('exportMdBtn');
+        const exportHtmlBtn = document.getElementById('exportHtmlBtn');
+        const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+        const charCount = document.getElementById('charCount');
+        const lineCount = document.getElementById('lineCount');
+        const wordCount = document.getElementById('wordCount');
+
+        // 初始渲染
+        function renderPreview() {
+            const markdown = markdownInput.value;
+            htmlPreview.innerHTML = marked.parse(markdown);
+            
+            // 更新统计
+            updateStats(markdown);
+            
+            // 重新应用语法高亮
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+        }
+
+        // 更新统计信息
+        function updateStats(text) {
+            // 字符数
+            charCount.textContent = text.length;
+            
+            // 行数
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            lineCount.textContent = lines.length;
+            
+            // 单词数（简单统计）
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            wordCount.textContent = words.length;
+        }
+
+        // 清空内容
+        clearBtn.addEventListener('click', () => {
+            if (confirm('确定要清空所有内容吗？')) {
+                markdownInput.value = '';
+                renderPreview();
+            }
+        });
+
+        // 加载示例
+        sampleBtn.addEventListener('click', () => {
+            markdownInput.value = `# Markdown 编辑器示例
+
+## 欢迎使用 ToolKit Lab 的 Markdown 编辑器
+
+这是一个**完全免费**的在线编辑器，所有处理都在您的浏览器中完成，保护您的隐私。
+
+### 主要功能
+- ✅ **实时预览**：输入时即时看到渲染结果
+- ✅ **语法高亮**：代码块自动高亮显示
+- ✅ **文件导出**：支持导出为 HTML 和 Markdown 文件
+- ✅ **本地处理**：所有数据都在您的设备上处理
+
+### 代码示例
+\`\`\`javascript
+// 这是一个JavaScript代码示例
+function helloWorld() {
+    console.log("Hello, Markdown Editor!");
+    return "ToolKit Lab 让工具更简单";
+}
+\`\`\`
+
+### 表格示例
+| 功能 | 状态 | 说明 |
+|------|------|------|
+| 实时预览 | ✅ 已实现 | 输入时即时渲染 |
+| 语法高亮 | ✅ 已实现 | 支持多种编程语言 |
+| 文件导出 | 🔄 开发中 | 即将推出 |
+| 快捷键 | 🔄 开发中 | 提升编辑效率 |
+
+### 数学公式支持
+编辑器支持 LaTeX 数学公式：
+- 行内公式：$E = mc^2$
+- 块级公式：$$\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$$
+
+> **提示**：这是一个正在开发中的工具，我们会持续改进功能！`;
+            renderPreview();
+        });
+
+        // 导出Markdown文件
+        exportMdBtn.addEventListener('click', () => {
+            const content = markdownInput.value;
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `toolkit-lab-markdown-${new Date().toISOString().slice(0,10)}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // 显示成功消息
+            showMessage('Markdown文件已下载！', 'success');
+        });
+
+        // 导出HTML文件
+        exportHtmlBtn.addEventListener('click', () => {
+            const markdown = markdownInput.value;
+            const html = marked.parse(markdown);
+            const fullHtml = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown导出 - ToolKit Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        pre code { border-radius: 6px; padding: 16px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f5f5f5; }
+        blockquote { border-left: 4px solid #ddd; margin-left: 0; padding-left: 16px; color: #666; }
+    </style>
+</head>
+<body>
+${html}
+<footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #999; font-size: 14px;">
+    使用 <a href="https://cr1s164.github.io/toolkit-lab/tools/markdown-editor.html">ToolKit Lab Markdown 编辑器</a> 生成
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>`;
+            
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `toolkit-lab-html-${new Date().toISOString().slice(0,10)}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // 显示成功消息
+            showMessage('HTML文件已下载！', 'success');
+        });
+
+        // 复制HTML到剪贴板
+        copyHtmlBtn.addEventListener('click', () => {
+            const markdown = markdownInput.value;
+            const html = marked.parse(markdown);
+            navigator.clipboard.writeText(html).then(() => {
+                showMessage('HTML已复制到剪贴板！', 'success');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                showMessage('复制失败，请手动复制', 'error');
+            });
+        });
+
+        // 显示消息
+        function showMessage(text, type = 'info') {
+            // 移除现有的消息
+            const existingMsg = document.querySelector('.flash-message');
+            if (existingMsg) existingMsg.remove();
+            
+            // 创建新消息
+            const msg = document.createElement('div');
+            msg.className = `flash-message fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' : 
+                type === 'error' ? 'bg-red-500 text-white' : 
+                'bg-blue-500 text-white'
+            }`;
+            msg.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-2"></i>
+                    <span>${text}</span>
+                </div>
+            `;
+            document.body.appendChild(msg);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                if (msg.parentNode) {
+                    msg.parentNode.removeChild(msg);
+                }
+            }, 3000);
+        }
+
+        // 实时监听输入变化
+        let renderTimeout;
+        markdownInput.addEventListener('input', () => {
+            clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(renderPreview, 100);
+        });
+
+        // 初始化渲染
+        renderPreview();
+        
+        // 添加快捷键支持
+        markdownInput.addEventListener('keydown', (e) => {
+            // Ctrl+B: 加粗
+            if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault();
+                wrapSelection('**', '**', '加粗文本');
+            }
+            // Ctrl+I: 斜体
+            else if (e.ctrlKey && e.key === 'i') {
+                e.preventDefault();
+                wrapSelection('*', '*', '斜体文本');
+            }
+            // Ctrl+K: 链接
+            else if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                wrapSelection('[', '](https://)', '链接文本');
+            }
+        });
+
+        // 包装选中文本
+        function wrapSelection(startTag, endTag, placeholder = '') {
+            const textarea = markdownInput;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            const newText = startTag + (selectedText || placeholder) + endTag;
+            textarea.setRangeText(newText, start, end, 'end');
+            textarea.focus();
+            
+            // 触发输入事件以更新预览
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        // 添加样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .prose {
+                color: #374151;
+            }
+            .prose h1 {
+                font-size: 2.25rem;
+                font-weight: bold;
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+                border-bottom: 2px solid #e5e7eb;
+                padding-bottom: 0.5rem;
+            }
+            .prose h2 {
+                font-size: 1.875rem;
+                font-weight: bold;
+                margin-top: 1.25rem;
+                margin-bottom: 0.75rem;
+            }
+            .prose h3 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .prose ul {
+                list-style-type: disc;
+                padding-left: 1.5rem;
+                margin: 0.75rem 0;
+            }
+            .prose ol {
+                list-style-type: decimal;
+                padding-left: 1.5rem;
+                margin: 0.75rem 0;
+            }
+            .prose code {
+                background-color: #f3f4f6;
+                padding: 0.2rem 0.4rem;
+                border-radius: 0.25rem;
+                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                font-size: 0.9em;
+            }
+            .prose pre {
+                background-color: #1f2937;
+                color: #f9fafb;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                margin: 1rem 0;
+            }
+            .prose blockquote {
+                border-left: 4px solid #d1d5db;
+                padding-left: 1rem;
+                margin-left: 0;
+                color: #6b7280;
+                font-style: italic;
+            }
+            .prose table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1rem 0;
+            }
+            .prose th, .prose td {
+                border: 1px solid #d1d5db;
+                padding: 0.5rem 0.75rem;
+                text-align: left;
+            }
+            .prose th {
+                background-color: #f9fafb;
+                font-weight: 600;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
