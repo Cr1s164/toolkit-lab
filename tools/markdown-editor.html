@@ -14,7 +14,7 @@
     <!-- Highlight.js 用于语法高亮 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    <script>hljs.highlightAll</script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body class="bg-gray-50">
     <!-- 导航栏 -->
@@ -103,16 +103,22 @@ function helloWorld() {
 - 块级公式：$$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
 
 > **提示**：这是一个正在开发中的工具，我们会持续改进功能！</textarea>
-                        <div class="mt-4 flex flex-wrap gap-2">
-                            <button id="exportMdBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
-                                <i class="fas fa-download mr-2"></i>导出 Markdown
-                            </button>
-                            <button id="exportHtmlBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center">
-                                <i class="fas fa-code mr-2"></i>导出 HTML
-                            </button>
-                            <button id="copyHtmlBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center">
-                                <i class="fas fa-copy mr-2"></i>复制 HTML
-                            </button>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-share-square mr-2"></i>导出与分享
+                            </h3>
+                            <div class="flex flex-wrap gap-3">
+                                <button id="exportMdBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center shadow-sm">
+                                    <i class="fas fa-download mr-2"></i>导出 Markdown 文件
+                                </button>
+                                <button id="exportHtmlBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center shadow-sm">
+                                    <i class="fas fa-code mr-2"></i>导出 HTML 文件
+                                </button>
+                                <button id="copyHtmlBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center shadow-sm">
+                                    <i class="fas fa-copy mr-2"></i>复制 HTML 到剪贴板
+                                </button>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">导出的文件将下载到您的设备，所有处理都在本地完成。</p>
                         </div>
                     </div>
                 </div>
@@ -133,15 +139,23 @@ function helloWorld() {
                             <!-- 预览内容将在这里动态渲染 -->
                             <p class="text-gray-500 italic">预览将在此处显示...</p>
                         </div>
-                        <div class="mt-4 text-sm text-gray-500 flex justify-between">
-                            <div>
-                                <span id="charCount">0</span> 字符
-                            </div>
-                            <div>
-                                <span id="lineCount">0</span> 行
-                            </div>
-                            <div>
-                                <span id="wordCount">0</span> 词
+                        <div class="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                                <i class="fas fa-chart-bar mr-2"></i>文档统计
+                            </h4>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="text-center p-3 bg-white rounded border">
+                                    <div class="text-2xl font-bold text-blue-600" id="charCount">0</div>
+                                    <div class="text-xs text-gray-600 mt-1">字符</div>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded border">
+                                    <div class="text-2xl font-bold text-green-600" id="lineCount">0</div>
+                                    <div class="text-xs text-gray-600 mt-1">行数</div>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded border">
+                                    <div class="text-2xl font-bold text-purple-600" id="wordCount">0</div>
+                                    <div class="text-xs text-gray-600 mt-1">单词</div>
+                                </div>
                             </div>
                         </div>
                     </div>
