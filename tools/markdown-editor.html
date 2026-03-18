@@ -264,7 +264,17 @@ function helloWorld() {
 
     <!-- 主要JavaScript代码 -->
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
         // 初始化marked.js
+        // 检查必要库是否加载
+        if (typeof marked === 'undefined') {
+            console.error('marked.js 未加载，请检查网络连接或刷新页面');
+            alert('Markdown解析库加载失败，部分功能可能无法使用。请刷新页面或检查网络连接。');
+            return;
+        }
+        if (typeof hljs === 'undefined') {
+            console.warn('highlight.js 未加载，代码高亮功能可能无法使用');
+        }
         marked.setOptions({
             breaks: true,
             gfm: true,
@@ -590,6 +600,7 @@ ${html}
             }
         `;
         document.head.appendChild(style);
+        });
     </script>
 </body>
 </html>
