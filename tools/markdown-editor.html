@@ -273,7 +273,9 @@ function helloWorld() {
                     try {
                         return hljs.highlight(code, { language: lang }).value;
                     } catch (err) {
-                        console.error('Highlight.js error:', err);
+                        // Highlight.js 语法高亮失败，继续使用原始代码
+                        console.warn('语法高亮处理失败，使用原始代码显示:', err.message);
+                        return code;
                     }
                 }
                 return code;
